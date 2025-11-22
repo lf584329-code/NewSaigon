@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>New Saigon Bangkok — Viet & Thaï à Bruxelles</title>
+  <meta name="description" content="Cuisine vietnamienne & thaïlandaise authentique à Bruxelles. Plats savoureux, généreux, frais. Accueil chaleureux. Terrasse." />
+
+  
+  <style>
+    :root{
+      --bg:#ffffff;
+      --bg-soft:#f7f5f1;
+      --text:#0d0f12;
+      --muted:#61656b;
+      --gold:#b08a3e;
+      --gold-2:#d7b770;
+      --line:rgba(13,15,18,0.08);
+      --radius:20px;
+      --radius-sm:14px;
+      --shadow:0 16px 40px rgba(13,15,18,0.10);
+      --shadow-soft:0 8px 20px rgba(13,15,18,0.06);
+      --maxw:1180px;
+    }
+    *{box-sizing:border-box;}
+    html{scroll-behavior:smooth;}
+    body{
+      margin:0;
+      font-family: system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
+      color:var(--text);
+      background:var(--bg);
+      line-height:1.7;
+      -webkit-font-smoothing:antialiased;
+      text-rendering:optimizeLegibility;
+    }
+    a{color:inherit;text-decoration:none;}
+    img{max-width:100%;display:block;}
+    .container{width:min(var(--maxw), 92vw); margin:auto;}
+    .section{padding:88px 0;}
+    .eyebrow{
+      letter-spacing:.18em;
+      text-transform:uppercase;
+      font-weight:700;
+      font-size:12px;
+      color:var(--muted);
+    }
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center; gap:8px;
+      padding:12px 20px; border-radius:999px;
+      font-weight:700; font-size:14px; letter-spacing:.02em;
+      border:1px solid var(--gold);
+      background:#fff; color:var(--text);
+      transition:.25s ease; cursor:pointer;
+      box-shadow:var(--shadow-soft);
+    }
+    .btn:hover{transform:translateY(-1px); background:rgba(176,138,62,0.07);}
+    .btn.primary{
+      background:linear-gradient(135deg, var(--gold), var(--gold-2));
+      border-color:transparent;
+      color:#0b0906;
+      box-shadow:0 12px 30px rgba(176,138,62,0.35);
+    }
+    .btn.primary:hover{filter:saturate(1.05); opacity:.98;}
+    .pill{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:6px 12px; border-radius:999px; font-size:12px;
+      border:1px solid var(--line); color:var(--muted); background:#fff;
+      box-shadow:var(--shadow-soft);
+    }
+
+    /* Header */
+    header{
+      position:sticky; top:0; z-index:50;
+      background:rgba(255,255,255,0.9);
+      border-bottom:1px solid var(--line);
+      backdrop-filter: blur(10px);
+    }
+    .nav{
+      display:flex; align-items:center; justify-content:space-between;
+      padding:14px 0;
+    }
+    .brand{
+      letter-spacing:.22em; text-transform:uppercase;
+      font-weight:800; font-size:12px;
+      display:flex; align-items:center; gap:10px;
+    }
+    .brand .dot{
+      width:7px;height:7px;border-radius:50%;
+      background:linear-gradient(135deg, var(--gold), var(--gold-2));
+      box-shadow:0 0 0 4px rgba(176,138,62,0.12);
+    }
+    nav ul{
+      list-style:none; display:flex; gap:18px; padding:0; margin:0;
+      font-size:13px; color:var(--muted);
+      letter-spacing:.02em;
+    }
+    nav a{padding:8px 8px; border-radius:8px;}
+    nav a:hover{color:var(--text); background:rgba(13,15,18,0.04);}
+    .nav-actions{display:flex; gap:10px; align-items:center;}
+    .burger{display:none;}
+    .mobile-menu{display:none !important; padding:12px 0 18px; border-top:1px solid var(--line);}
+    .mobile-menu a{display:block; padding:10px 0; color:var(--muted); font-size:14px;}
+    .mobile-menu a:hover{color:var(--text);}
+    @media(max-width:820px){
+      nav ul{display:none;}
+      .burger{
+        display:inline-flex; width:42px;height:42px;align-items:center;justify-content:center;
+        border:1px solid var(--line);border-radius:10px;background:#fff;
+        box-shadow:var(--shadow-soft);
+      }
+      .mobile-menu.open{display:block !important;}
+    }
+
+    /* HERO with carousel */
+    .hero{
+      position:relative; min-height:82vh; display:grid; place-items:center;
+      color:#fff; overflow:hidden;
+    }
+    .hero::after{
+      content:""; position:absolute; inset:0;
+      background:
+        radial-gradient(1200px 600px at 12% 88%, rgba(0,0,0,0.10), transparent 60%),
+        linear-gradient(180deg, rgba(0,0,0,0.38), rgba(0,0,0,0.70));
+      z-index:1;
+    }
+    .hero-slides{position:absolute; inset:0; z-index:0;}
+    .hero-slide{
+      position:absolute; inset:0;
+      background-size:cover; background-position:center;
+      opacity:0; transform:scale(1.06);
+      transition: opacity 1.4s ease, transform 2.4s ease;
+      filter:saturate(1.05) contrast(1.02);
+    }
+    .hero-slide.active{opacity:1; transform:scale(1.0);}
+
+    .hero-inner{
+      position:relative; z-index:2;
+      width:min(1100px, 92vw);
+      display:grid; grid-template-columns:1.2fr .8fr; gap:22px; align-items:end;
+      padding:108px 0 84px;
+    }
+    .hero h1{
+      font-family:Georgia,"Times New Roman",serif;
+      font-size:clamp(38px,5.2vw,64px);
+      line-height:1.05; margin:10px 0 12px;
+      letter-spacing:.01em;
+      text-shadow:0 8px 26px rgba(0,0,0,0.45);
+    }
+    .hero p{
+      font-size:clamp(15px,1.9vw,19px);
+      max-width:62ch; color:rgba(255,255,255,.98);
+      text-shadow:0 6px 20px rgba(0,0,0,0.45);
+    }
+    .hero-badges{display:flex; flex-wrap:wrap; gap:8px; margin:16px 0 20px;}
+    .hero .pill{background:rgba(255,255,255,0.97);}
+
+    .hero-card{
+      background:rgba(255,255,255,0.98);
+      color:var(--text);
+      border-radius:calc(var(--radius) + 2px);
+      padding:18px;
+      box-shadow:var(--shadow);
+      border:1px solid rgba(255,255,255,.7);
+    }
+    .hero-card .row{
+      display:flex; justify-content:space-between; gap:10px;
+      padding:9px 0; border-bottom:1px dashed var(--line);
+      font-size:14px;
+    }
+    .hero-card .row:last-child{border-bottom:0;}
+    @media(max-width:900px){ .hero-inner{grid-template-columns:1fr;} }
+
+    /* Carousel controls */
+    .hero-controls{
+      position:absolute; inset:auto 0 24px 0; z-index:3;
+      display:flex; justify-content:center; pointer-events:none;
+    }
+    .hero-dots{
+      display:flex; gap:8px; pointer-events:auto;
+      background:rgba(255,255,255,0.92);
+      padding:8px 10px; border-radius:999px;
+      border:1px solid rgba(13,15,18,0.06);
+      box-shadow:var(--shadow);
+    }
+    .dotbtn{
+      width:8px; height:8px; border-radius:50%;
+      border:0; background:rgba(13,15,18,0.28); cursor:pointer;
+      transition:.2s ease;
+    }
+    .dotbtn.active{
+      background:linear-gradient(135deg, var(--gold), var(--gold-2));
+      transform:scale(1.25);
+    }
+
+    .hero-arrows{
+      position:absolute; inset:0; z-index:3;
+      display:flex; align-items:center; justify-content:space-between;
+      padding:0 18px; pointer-events:none;
+    }
+    .arrow{
+      pointer-events:auto;
+      width:46px; height:46px; border-radius:50%;
+      border:1px solid rgba(255,255,255,0.85);
+      background:rgba(255,255,255,0.10);
+      color:#fff; font-size:20px; font-weight:800;
+      display:grid; place-items:center; cursor:pointer;
+      transition:.2s ease;
+      backdrop-filter: blur(6px);
+    }
+    .arrow:hover{background:rgba(255,255,255,0.22); transform:translateY(-1px);}
+
+    /* Floating CTA */
+    .sticky-cta{
+      position:fixed; right:18px; bottom:18px; z-index:60;
+      display:flex; gap:8px;
+      box-shadow:var(--shadow);
+    }
+    @media(max-width:600px){
+      .sticky-cta{left:12px; right:12px; bottom:12px;}
+      .sticky-cta .btn{flex:1;}
+    }
+
+    /* Visual split section */
+    .split{
+      display:grid; grid-template-columns:1fr 1fr; gap:18px; align-items:center;
+    }
+    .split .box{
+      background:var(--bg-soft); border:1px solid var(--line);
+      border-radius:var(--radius); padding:26px;
+      box-shadow:var(--shadow-soft);
+    }
+    .split .imgbox{
+      border-radius:var(--radius); overflow:hidden; box-shadow:var(--shadow);
+    }
+    .split .imgbox img{height:430px; width:100%; object-fit:cover;}
+    @media(max-width:900px){ .split{grid-template-columns:1fr;} .split .imgbox img{height:300px;} }
+
+    /* Signature dishes */
+    .cards{
+      display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-top:18px;
+    }
+    .card{
+      background:#fff; border:1px solid var(--line);
+      border-radius:var(--radius-sm); overflow:hidden;
+      box-shadow:var(--shadow);
+    }
+    .card img{height:220px; object-fit:cover;}
+    .card .content{padding:16px;}
+    .card h3{margin:0 0 6px; font-size:17px; letter-spacing:.01em;}
+    .card p{margin:0; color:var(--muted); font-size:15px;}
+    @media(max-width:900px){ .cards{grid-template-columns:1fr;} }
+
+    /* Masonry gallery */
+    .masonry{
+      columns:3 260px;
+      column-gap:14px;
+      margin-top:18px;
+    }
+    .masonry figure{
+      margin:0 0 14px; break-inside:avoid;
+      border-radius:var(--radius-sm);
+      overflow:hidden; border:1px solid var(--line);
+      box-shadow:var(--shadow);
+      background:#fff; position:relative;
+      transform:translateZ(0);
+    }
+    .masonry img{width:100%; height:auto; transition:transform .6s ease;}
+    .masonry figure:hover img{transform:scale(1.03);}
+    .masonry figcaption{
+      position:absolute; left:0; right:0; bottom:0;
+      padding:10px 12px; font-size:12px; color:#fff; letter-spacing:.02em;
+      background:linear-gradient(180deg, transparent, rgba(0,0,0,0.65));
+    }
+
+    /* Reviews */
+    .reviews{
+      display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-top:18px;
+    }
+    .review{
+      background:#fff; border:1px solid var(--line); border-radius:var(--radius-sm);
+      padding:18px; box-shadow:var(--shadow-soft);
+      color:var(--muted); font-size:15px; position:relative;
+    }
+    .review::before{
+      content:"“"; position:absolute; top:-12px; left:12px;
+      font-size:48px; color:rgba(176,138,62,0.22); font-family:Georgia, serif;
+    }
+    .review .who{margin-top:8px; color:var(--text); font-weight:800; font-size:13px; letter-spacing:.02em;}
+    @media(max-width:900px){ .reviews{grid-template-columns:1fr;} }
+
+    /* Contact */
+    .contact-grid{
+      display:grid; grid-template-columns:0.9fr 1.1fr; gap:14px; margin-top:18px;
+    }
+    .contact-card{
+      background:#fff; border:1px solid var(--line); border-radius:var(--radius-sm);
+      padding:20px; box-shadow:var(--shadow);
+    }
+    .contact-list{display:grid; gap:12px; color:var(--muted); font-size:15px;}
+    .contact-list b{color:var(--text);}
+    .map{
+      border-radius:var(--radius-sm); overflow:hidden; border:1px solid var(--line);
+      box-shadow:var(--shadow); min-height:380px;
+    }
+    .map iframe{width:100%; height:100%; border:0;}
+    @media(max-width:900px){ .contact-grid{grid-template-columns:1fr;} }
+
+    footer{
+      padding:30px 0; border-top:1px solid var(--line);
+      color:var(--muted); font-size:13px; letter-spacing:.02em;
+    }
+
+    h2{
+      font-family:Georgia,"Times New Roman",serif;
+      font-size:clamp(25px,3vw,34px);
+      margin:0 0 8px; letter-spacing:.01em;
+    }
+    .sub{color:var(--muted); max-width:78ch; font-size:16px;}
+
+    /* subtle section separators */
+    .soft-band{
+      background:var(--bg-soft);
+      border-top:1px solid var(--line);
+      border-bottom:1px solid var(--line);
+    }
+  </style>
+
+</head>
+
+<body>
+
+<header>
+  <div class="container nav">
+    <a href="#home" class="brand"><span class="dot"></span>New Saigon Bangkok</a>
+
+    <nav>
+      <ul>
+        <li><a href="#about">Le restaurant</a></li>
+        <li><a href="#signatures">Plats stars</a></li>
+        <li><a href="#gallery">Galerie</a></li>
+        <li><a href="#reviews">Avis</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+
+    <div class="nav-actions">
+      <a class="btn ghost" href="#gallery">Photos</a>
+      <a class="btn primary" href="#contact">Réserver</a>
+      <button class="burger" id="burger">☰</button>
+    </div>
+  </div>
+
+  <div class="container mobile-menu" id="mobileMenu">
+    <a href="#about">Le restaurant</a>
+    <a href="#signatures">Plats stars</a>
+    <a href="#gallery">Galerie</a>
+    <a href="#reviews">Avis</a>
+    <a href="#contact">Contact</a>
+  </div>
+</header>
+
+<main id="home">
+
+  <!-- HERO CAROUSEL -->
+  <section class="hero">
+    <div class="hero-slides" id="heroSlides">
+      <div class="hero-slide active"></div>
+      <div class="hero-slide"></div>
+      <div class="hero-slide"></div>
+    </div>
+
+    <div class="hero-arrows">
+      <button class="arrow" id="prevBtn" aria-label="Image précédente">‹</button>
+      <button class="arrow" id="nextBtn" aria-label="Image suivante">›</button>
+    </div>
+
+    <div class="hero-inner">
+      <div>
+        <div class="eyebrow">New Saigon Bangkok</div>
+        <span class="pill">Viet & Thaï authentique • Saint-Josse</span>
+        <h1>Un voyage de saveurs, élégant et authentique, au cœur de Bruxelles.</h1>
+        <p>
+          Ici, chaque assiette sent la citronnelle, le basilic thaï et les herbes fraîches.
+          On vient pour l’authenticité, on reste pour la générosité, et on revient
+          pour l’accueil simple et sincère.
+          <br><br>
+          New Saigon Bangkok, c’est le genre d’adresse qu’on garde et qu’on partage.
+        </p>
+        <div class="hero-badges">
+          <span class="pill">Cuisine maison parfumée</span>
+          <span class="pill">Portions généreuses</span>
+          <span class="pill">Prix justes • service rapide</span>
+          <span class="pill">Terrasse aux beaux jours</span>
+        </div>
+        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+          <a class="btn primary" href="#contact">Réserver une table</a>
+          <a class="btn" href="https://www.ubereats.com/be/store/new-saigon-bangkok/mhk3GxNXQTehogKkSl9ZPQ?diningMode=PICKUP" target="_blank" rel="noopener">Commander (Uber Eats)</a>
+        </div>
+      </div>
+
+      <div class="hero-card">
+        <div class="row"><span>Adresse</span><b>Rue de la Pacification 36, 1210 Bruxelles</b></div>
+        <div class="row"><span>Téléphone</span><b><a href="tel:+32472863522">+32 472 86 35 22</a></b></div>
+        <div class="row"><span>Horaires</span><b>Lun–Ven 12–14h30 / 18–22h30</b></div>
+        <div class="row"><span>Samedi</span><b>18–22h30</b></div>
+        <div class="row"><span>Dimanche</span><b>Fermé</b></div>
+        <div style="margin-top:10px; display:flex; gap:8px; flex-wrap:wrap;">
+          <a class="btn primary" href="#contact">Itinéraire</a>
+          <a class="btn"
+             href="https://wa.me/32472863522?text=Bonjour%20New%20Saigon%20Bangkok,%20je%20voudrais%20r%C3%A9server%20une%20table."
+             target="_blank" rel="noopener">WhatsApp</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-controls">
+      <div class="hero-dots" id="dots">
+        <button class="dotbtn active"></button>
+        <button class="dotbtn"></button>
+        <button class="dotbtn"></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="section" id="about">
+    <div class="container split">
+      <div class="box">
+        <h2>Une cuisine qui fait voyager</h2>
+        <p class="sub">
+          Les meilleurs avis parlent d’une chose : ici, le goût est au rendez-vous.
+          Des recettes traditionnelles, une fraîcheur évidente, et une constance qui rassure.
+          Que tu viennes pour un lunch rapide ou un dîner tranquille, tu retrouves
+          la même chaleur et la même générosité.
+        </p>
+        <ul style="margin:14px 0 0; color:var(--muted); display:grid; gap:6px;">
+          <li>✔ Plats maison, herbes fraîches, sauces parfumées</li>
+          <li>✔ Portions copieuses sans exploser l’addition</li>
+          <li>✔ Service rapide et chaleureux, idéal au lunch</li>
+          <li>✔ Ambiance calme et conviviale + terrasse</li>
+        </ul>
+      </div>
+      <div class="imgbox">
+        <img src="images/interieur.jpg" alt="Intérieur du restaurant">
+      </div>
+    </div>
+  </section>
+
+  <!-- SIGNATURES -->
+  <section class="section soft-band" id="signatures">
+    <div class="container">
+      <h2>Plats signatures</h2>
+      <p class="sub">Une sélection “ça vaut le détour”, inspirée des plats les plus aimés.</p>
+
+      <div class="cards">
+        <article class="card">
+          <img src="images/plat-1.jpg" alt="Plat signature 1">
+          <div class="content">
+            <h3>Sautés maison parfumés</h3>
+            <p>Citronnelle, basilic thaï, légumes croquants — goût net, généreux et équilibré.</p>
+          </div>
+        </article>
+
+        <article class="card">
+          <img src="images/plat-2.jpg" alt="Plat signature 2">
+          <div class="content">
+            <h3>Entrées fraîches à partager</h3>
+            <p>Rouleaux, salades, nems : légèreté, fraîcheur et textures.</p>
+          </div>
+        </article>
+
+        <article class="card">
+          <img src="images/plat-3.jpg" alt="Plat signature 3">
+          <div class="content">
+            <h3>Assortiments Viet-Thaï</h3>
+            <p>Le meilleur de la carte en une table : doux, épicé, sucré-salé.</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- GALLERY -->
+  <section class="section" id="gallery">
+    <div class="container">
+      <h2>Galerie</h2>
+      <p class="sub">Ajoute tes meilleures photos dans /images (voir README).</p>
+
+      <div class="masonry">
+        <figure><img src="images/g-1.jpg" alt="Galerie 1"><figcaption>Ambiance</figcaption></figure>
+        <figure><img src="images/g-2.jpg" alt="Galerie 2"><figcaption>Plats</figcaption></figure>
+        <figure><img src="images/g-3.jpg" alt="Galerie 3"><figcaption>Plats</figcaption></figure>
+        <figure><img src="images/g-4.jpg" alt="Galerie 4"><figcaption>Terrasse</figcaption></figure>
+        <figure><img src="images/g-5.jpg" alt="Galerie 5"><figcaption>Détails</figcaption></figure>
+        <figure><img src="images/facade.jpg" alt="Façade"><figcaption>Façade</figcaption></figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- REVIEWS -->
+  <section class="section soft-band" id="reviews">
+    <div class="container">
+      <h2>Ce que les clients retiennent</h2>
+      <div class="reviews">
+        <div class="review">Cuisine authentique, vraiment savoureuse, avec des portions très généreuses.<div class="who">— Habitués du quartier</div></div>
+        <div class="review">Super lunch : service rapide, prix ultra correct, et on ressort heureux.<div class="who">— Clients du midi</div></div>
+        <div class="review">Accueil chaleureux, ambiance simple et conviviale : une vraie bonne adresse.<div class="who">— Soirées entre amis</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="section" id="contact">
+    <div class="container">
+      <h2>Contact & accès</h2>
+      <div class="contact-grid">
+        <div class="contact-card">
+          <div class="contact-list">
+            <div><b>Adresse</b><br>Rue de la Pacification 36, 1210 Saint-Josse-ten-Noode, Bruxelles</div>
+            <div><b>Téléphone</b><br><a href="tel:+32472863522">+32 472 86 35 22</a></div>
+            <div><b>WhatsApp</b><br>
+              <a class="btn primary" style="margin-top:6px;"
+                 href="https://wa.me/32472863522?text=Bonjour%20New%20Saigon%20Bangkok,%20je%20voudrais%20r%C3%A9server%20une%20table."
+                 target="_blank" rel="noopener">Ouvrir WhatsApp</a>
+            </div>
+            <div><b>Horaires</b><br>
+              Lun–Ven : 12h00–14h30 • 18h00–22h30<br>
+              Samedi : 18h00–22h30<br>
+              Dimanche : fermé
+            </div>
+          </div>
+        </div>
+
+        <div class="map">
+          <iframe loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+            src="https://www.google.com/maps?q=New%20Saigon%20Bangkok,%20Rue%20de%20la%20Pacification%2036,%201210%20Bruxelles&output=embed"></iframe>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="container" style="display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap;">
+    <div>© <span id="year"></span> New Saigon Bangkok — Exercice vitrine.</div>
+    <div style="display:flex; gap:10px;">
+      <a href="#home">Accueil</a>
+      <a href="#gallery">Galerie</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </div>
+</footer>
+
+<div class="sticky-cta">
+  <a class="btn primary" href="#contact">Réserver</a>
+  <a class="btn" target="_blank" rel="noopener"
+     href="https://wa.me/32472863522?text=Bonjour%20New%20Saigon%20Bangkok,%20je%20voudrais%20r%C3%A9server%20une%20table.">WhatsApp</a>
+</div>
+
+
+
+<script>
+  document.getElementById("year").textContent = new Date().getFullYear();
+
+  // Mobile menu
+  const burger = document.getElementById('burger');
+  const menu = document.getElementById('mobileMenu');
+  burger?.addEventListener('click', () => menu.classList.toggle('open'));
+  menu?.querySelectorAll('a').forEach(a =>
+    a.addEventListener('click', () => menu.classList.remove('open'))
+  );
+
+  // HERO carousel using local images (autoplay immédiat)
+  function initHeroCarousel(){
+    const heroImages = [
+      "images/hero-1.jpg",
+      "images/hero-2.jpg",
+      "images/hero-3.jpg"
+    ];
+
+    const slides = Array.from(document.querySelectorAll(".hero-slide"));
+    if(!slides.length) return;
+
+    const dotsWrap = document.getElementById("dots");
+    const dots = dotsWrap ? Array.from(dotsWrap.querySelectorAll(".dotbtn")) : [];
+    const prevBtn = document.getElementById("prevBtn");
+    const nextBtn = document.getElementById("nextBtn");
+
+    let index = 0;
+    let timer = null;
+
+    slides.forEach((s, i) => {
+      s.style.backgroundImage = `url(${heroImages[i]})`;
+    });
+
+    function showSlide(i){
+      index = (i + slides.length) % slides.length;
+      slides.forEach((s, k) => s.classList.toggle("active", k === index));
+      dots.forEach((d, k) => d.classList.toggle("active", k === index));
+    }
+    function next(){ showSlide(index + 1); }
+    function prev(){ showSlide(index - 1); }
+
+    function startAuto(){
+      stopAuto();
+      timer = setInterval(next, 3000); // 3s
+    }
+    function stopAuto(){
+      if(timer) clearInterval(timer);
+      timer = null;
+    }
+
+    nextBtn?.addEventListener("click", () => { next(); startAuto(); });
+    prevBtn?.addEventListener("click", () => { prev(); startAuto(); });
+    dots.forEach((d, i) =>
+      d.addEventListener("click", () => { showSlide(i); startAuto(); })
+    );
+
+    const hero = document.querySelector(".hero");
+    if(hero){
+      hero.addEventListener("mouseenter", stopAuto);
+      hero.addEventListener("mouseleave", startAuto);
+    }
+
+    showSlide(0);
+    requestAnimationFrame(startAuto); // autoplay sans délai perceptible
+  }
+
+  // readyState-safe init (important en local Safari)
+  if(document.readyState === "loading"){
+    document.addEventListener("DOMContentLoaded", initHeroCarousel);
+  } else {
+    initHeroCarousel();
+  }
+</script>
+
+
+
+</body>
+</html>
